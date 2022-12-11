@@ -28,7 +28,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 1.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.sp
     ),
 
     bodyMedium = TextStyle(
