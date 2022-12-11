@@ -40,3 +40,18 @@ fun SquareBoxTextPreview() {
     }
 }
 
+@Preview
+@Composable
+fun SquareBoxTextWithIPv4Preview() {
+    FTPmanagerTheme {
+        SquareBoxText("192.168.1.1", Modifier)
+    }
+}
+
+@Preview
+@Composable
+fun SquareBoxTextWithIPv6Preview() {
+    FTPmanagerTheme {
+        SquareBoxText("2345:0425:2CA1:0000:0000:0567:5673:23b5", Modifier)
+    }
+}
