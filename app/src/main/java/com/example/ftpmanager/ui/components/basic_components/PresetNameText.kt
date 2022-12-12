@@ -5,7 +5,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ftpmanager.ui.theme.FTPmanagerTheme
 
@@ -25,7 +24,7 @@ fun PresetNameText(
 @Composable
 fun PresetNameTextPreview() {
     FTPmanagerTheme {
-        Surface() {
+        Surface {
             PresetNameText("This is a preset name")
         }
     }

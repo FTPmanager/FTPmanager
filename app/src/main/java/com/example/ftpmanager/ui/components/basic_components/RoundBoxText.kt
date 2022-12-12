@@ -1,5 +1,6 @@
 package com.example.ftpmanager.ui.components.basic_components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -9,13 +10,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.ftpmanager.R
 import com.example.ftpmanager.ui.theme.FTPmanagerTheme
 
 @Composable
 fun RoundBoxText(
-    text: String,
+    @StringRes text_id: Int,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -25,7 +28,7 @@ fun RoundBoxText(
             .wrapContentWidth()
     ) {
         Text(
-            text = text,
+            text = stringResource(text_id),
             style = MaterialTheme.typography.labelSmall,
             modifier = modifier.padding(horizontal = 4.dp)
         )
@@ -36,7 +39,7 @@ fun RoundBoxText(
 @Composable
 fun RoundBoxTextFTPPreview() {
     FTPmanagerTheme {
-        RoundBoxText("FTP", Modifier)
+        RoundBoxText(R.string.FTP, Modifier)
     }
 }
 
@@ -44,6 +47,6 @@ fun RoundBoxTextFTPPreview() {
 @Composable
 fun RoundBoxTextSFTPPreview() {
     FTPmanagerTheme {
-        RoundBoxText("SFTP", Modifier)
+        RoundBoxText(R.string.SFTP, Modifier)
     }
 }

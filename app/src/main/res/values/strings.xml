@@ -5,4 +5,6 @@
     <string name="sync_menu">Sync</string>
     <string name="file_status_menu">File status</string>
     <string name="file_manager_menu">Files</string>
+    <string name="FTP">FTP</string>
+    <string name="SFTP">SFTP</string>
 </resources>
