@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FTPmanager</string>
+    <string name="connect_menu">Connect</string>
+    <string name="share_menu">Share</string>
+    <string name="sync_menu">Sync</string>
+    <string name="file_status_menu">File status</string>
+    <string name="file_manager_menu">Files</string>
 </resources>
