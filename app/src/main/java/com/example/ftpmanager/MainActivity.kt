@@ -1,6 +1,7 @@
 package com.example.ftpmanager
 
 import android.os.Bundle
+import android.provider.SyncStateContract.Helpers.insert
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.ftpmanager.data.DatabaseHandler
 import com.example.ftpmanager.domain.FTP
 import com.example.ftpmanager.ui.theme.FTPmanagerTheme
 
@@ -28,7 +30,9 @@ class MainActivity : ComponentActivity() {
             }
         }
         val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
-        ftp.connect()
+
+        var db = DatabaseHandler(this)
+        db.insertConnection(ftp)
     }
 }
 

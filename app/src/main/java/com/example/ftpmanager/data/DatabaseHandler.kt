@@ -1,15 +1,168 @@
 package com.example.ftpmanager.data
 
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import android.util.Log
+import com.example.ftpmanager.domain.*
 
-object DatabaseHandler {
+class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB", null, 1) {
 
-    object ConnectData : BaseColumns {
+    override fun onCreate(db: SQLiteDatabase?) {
 
-        const val TABLE_NAME = "ConnectData"
-        const val COL_IP = "Ip"
+        val createConnectTable = "CREATE TABLE IF NOT EXISTS " + ConnectionColumns.TABLE_NAME + "(" +
+                ConnectionColumns.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ConnectionColumns.COL_CONNECTION_TYPE + " INTEGER," +
+                ConnectionColumns.COL_NAME + " VARCHAR(64)," +
+                ConnectionColumns.COL_IP + " VARCHAR(40)," +
+                ConnectionColumns.COL_USERNAME + " VARCHAR(256)," +
+                ConnectionColumns.COL_PASSWORD + " VARCHAR(256)," +
+                ConnectionColumns.COL_PORT + " NUMBER;"
+
+        val createShareTable = "CREATE TABLE IF NOT EXISTS " + ShareColumns.TABLE_NAME + "(" +
+                ShareColumns.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ShareColumns.COL_CONNECTION_TYPE + " INTEGER," +
+                ShareColumns.COL_NAME + " VARCHAR(64)," +
+                ShareColumns.COL_DIRECTORY + " VARCHAR(256)," +
+                ShareColumns.COL_USERNAME + " VARCHAR(256)," +
+                ShareColumns.COL_PASSWORD + " VARCHAR(256)," +
+                ShareColumns.COL_PORT + " NUMBER;"
+
+        val createSyncTable = "CREATE TABLE IF NOT EXISTS " + SyncColumns.TABLE_NAME + "(" +
+                SyncColumns.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                SyncColumns.COL_CONNECTION_TYPE + " INTEGER," +
+                SyncColumns.COL_NAME + " VARCHAR(64)," +
+                SyncColumns.COL_IP + " VARCHAR(40)," +
+                SyncColumns.COL_USERNAME + " VARCHAR(256)," +
+                SyncColumns.COL_PASSWORD + " VARCHAR(256)," +
+                SyncColumns.COL_PORT + " NUMBER;"
+
+        db?.execSQL(createConnectTable)
+        db?.execSQL(createShareTable)
+        db?.execSQL(createSyncTable)
+    }
+
+    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
+        TODO("Not yet implemented")
+
+    }
+
+    override fun onOpen(db: SQLiteDatabase?) {
+        super.onOpen(db)
+        LoadedData.connections = loadConnections()
+    }
+
+    fun insertConnection(connection: Connection) {
+
+        val db = this.writableDatabase
+        var row = ContentValues()
+
+        row.put(ConnectionColumns.COL_CONNECTION_TYPE, connection.type())
+        row.put(ConnectionColumns.COL_NAME, connection.name)
+        row.put(ConnectionColumns.COL_IP, connection.ip)
+        row.put(ConnectionColumns.COL_USERNAME, connection.username)
+        row.put(ConnectionColumns.COL_PASSWORD, connection.password)
+        row.put(ConnectionColumns.COL_PORT, connection.port)
+
+        var result = db.insert(ConnectionColumns.TABLE_NAME, null, row)
+        if(result == (-1).toLong())
+            Log.e("DatabaseHandler", "Failed to insert connection to database!")
+        else
+            Log.i("DatabaseHandler", "Added database record: " + connection.name)
+
+        db.close()
+    }
+
+    fun insertShare(share: Share) {
+        TODO()
+    }
+
+    fun insertSync(sync: Sync) {
+        TODO()
+    }
+
+    fun loadConnections() : MutableList<Connection> {
+
+        var list = mutableListOf<Connection>()
+
+        var db = this.readableDatabase
+        val loadQuery = "SELECT * FROM " + ConnectionColumns.TABLE_NAME
+        val result = db.rawQuery(loadQuery, null)
+
+        if(result.moveToFirst()) {
+            do {
+                when(result.getInt(0)) {
+                    1 -> list.add(FTP(
+                        result.getString(1),
+                        result.getString(2),
+                        result.getString(3),
+                        result.getString(4),
+                        result.getInt(5)
+                    ))
+                    2 -> list.add(SFTP(
+                        result.getString(1),
+                        result.getString(2),
+                        result.getString(3),
+                        result.getString(4),
+                        result.getInt(5)
+                    ))
+                    else -> continue
+                }
+            } while(result.moveToNext())
+        }
+
+        result.close()
+        db.close()
+        return list
+    }
+
+    fun deleteData() {
+        val db = this.writableDatabase
+
+        db.execSQL("DELETE * FROM " + ConnectionColumns.TABLE_NAME)
+        db.execSQL("DELETE * FROM " + ShareColumns.TABLE_NAME)
+        db.execSQL("DELETE * FROM " + SyncColumns.TABLE_NAME)
+
+        db.close()
+    }
+
+    object ConnectionColumns : BaseColumns {
+
+        const val TABLE_NAME = "ConnectionData"
+        const val COL_ID = "ID"
+        const val COL_CONNECTION_TYPE = "ConnectionType"
+        const val COL_NAME = "Name"
+        const val COL_IP = "IP"
         const val COL_USERNAME = "Username"
         const val COL_PASSWORD = "Password"
         const val COL_PORT = "Port"
     }
+
+    object ShareColumns : BaseColumns {
+
+        const val TABLE_NAME = "ShareData"
+        const val COL_ID = "ID"
+        const val COL_CONNECTION_TYPE = "ConnectionType"
+        const val COL_NAME = "Name"
+        const val COL_DIRECTORY = "Directory"
+        const val COL_USERNAME = "Username"
+        const val COL_PASSWORD = "Password"
+        const val COL_PORT = "Port"
+    }
+
+    object SyncColumns : BaseColumns {
+
+        const val TABLE_NAME = "SyncData"
+        const val COL_ID = "ID"
+        const val COL_CONNECTION_TYPE = "ConnectionType"
+        const val COL_NAME = "Name"
+        const val COL_IP = "IP"
+        const val COL_USERNAME = "Username"
+        const val COL_PASSWORD = "Password"
+        const val COL_PORT = "Port"
+    }
+
+
 }

@@ -32,8 +32,8 @@ class FTP public constructor(
             client.disconnect(true)             ///////
 
         } catch (e: Exception) {
-            Log.e(TAG, "Error")                             ///////
-            e.printStackTrace()                                  ///////
+            Log.e(TAG, "Funny Szymon's Error")                             ///////
+            //e.printStackTrace()                                  ///////
             connectionStatus = ConnectionStatus.ERROR
         }
     }
