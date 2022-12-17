@@ -1,5 +1,6 @@
 package com.example.ftpmanager.ui.components.complex_components
 
+import android.graphics.drawable.Icon
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
