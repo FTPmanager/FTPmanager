@@ -1,5 +1,6 @@
 package com.example.ftpmanager.ui.theme
 
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 
 val DarkNormal = Color(0xFF4d4646)
@@ -25,3 +26,15 @@ val RedDark = Color(0xFFa30000)
 val YellowNormal = Color(0xFFfdda0d)
 val YellowLight = Color(0xFFffff56)
 val YellowDark = Color(0xFFc5a900)
+
+
+val AppDarkColorScheme = darkColorScheme(
+    primary = DarkNormal,
+    secondary = GrayNormal,
+    tertiary = GreenNormal,
+    surface = GrayNormal,
+    onPrimary = WhiteNormal,
+    onSecondary = WhiteNormal,
+    onTertiary = DarkNormal,
+    onSurface = WhiteNormal
+)
