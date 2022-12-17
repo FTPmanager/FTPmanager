@@ -6,8 +6,7 @@ import com.example.ftpmanager.domain.Sync
 
 object LoadedData {
 
-    var connections = mutableListOf<Connection>();
-    var shares = mutableListOf<Share>();
-    var syncs = mutableListOf<Sync>();
-
+    var connections = mutableListOf<Connection>()
+    var shares = mutableListOf<Share>()
+    var syncs = mutableListOf<Sync>()
 }

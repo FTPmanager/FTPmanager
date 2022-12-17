@@ -19,7 +19,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
                 ConnectionColumns.COL_IP + " VARCHAR(40)," +
                 ConnectionColumns.COL_USERNAME + " VARCHAR(256)," +
                 ConnectionColumns.COL_PASSWORD + " VARCHAR(256)," +
-                ConnectionColumns.COL_PORT + " NUMBER;"
+                ConnectionColumns.COL_PORT + " INTEGER)"
 
         val createShareTable = "CREATE TABLE IF NOT EXISTS " + ShareColumns.TABLE_NAME + "(" +
                 ShareColumns.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -28,7 +28,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
                 ShareColumns.COL_DIRECTORY + " VARCHAR(256)," +
                 ShareColumns.COL_USERNAME + " VARCHAR(256)," +
                 ShareColumns.COL_PASSWORD + " VARCHAR(256)," +
-                ShareColumns.COL_PORT + " NUMBER;"
+                ShareColumns.COL_PORT + " INTEGER)"
 
         val createSyncTable = "CREATE TABLE IF NOT EXISTS " + SyncColumns.TABLE_NAME + "(" +
                 SyncColumns.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -37,21 +37,19 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
                 SyncColumns.COL_IP + " VARCHAR(40)," +
                 SyncColumns.COL_USERNAME + " VARCHAR(256)," +
                 SyncColumns.COL_PASSWORD + " VARCHAR(256)," +
-                SyncColumns.COL_PORT + " NUMBER;"
+                SyncColumns.COL_PORT + " INTEGER)"
 
         db?.execSQL(createConnectTable)
         db?.execSQL(createShareTable)
         db?.execSQL(createSyncTable)
     }
-
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         TODO("Not yet implemented")
 
     }
-
     override fun onOpen(db: SQLiteDatabase?) {
         super.onOpen(db)
-        LoadedData.connections = loadConnections()
+        LoadedData.connections = loadConnections(db)
     }
 
     fun insertConnection(connection: Connection) {
@@ -71,25 +69,25 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
             Log.e("DatabaseHandler", "Failed to insert connection to database!")
         else
             Log.i("DatabaseHandler", "Added database record: " + connection.name)
-
-        db.close()
     }
-
     fun insertShare(share: Share) {
         TODO()
     }
-
     fun insertSync(sync: Sync) {
         TODO()
     }
 
-    fun loadConnections() : MutableList<Connection> {
+    fun loadConnections()  : MutableList<Connection> {
+        return loadConnections(this.readableDatabase)
+    }
+    fun loadConnections(db: SQLiteDatabase?) : MutableList<Connection> {
 
         var list = mutableListOf<Connection>()
+        if(db == null)
+            return list
 
-        var db = this.readableDatabase
         val loadQuery = "SELECT * FROM " + ConnectionColumns.TABLE_NAME
-        val result = db.rawQuery(loadQuery, null)
+        val result = db?.rawQuery(loadQuery, null)
 
         if(result.moveToFirst()) {
             do {
@@ -114,18 +112,17 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         }
 
         result.close()
-        db.close()
         return list
     }
-
+    fun reloadData() {
+        LoadedData.connections = loadConnections(this.readableDatabase)
+    }
     fun deleteData() {
         val db = this.writableDatabase
 
         db.execSQL("DELETE * FROM " + ConnectionColumns.TABLE_NAME)
         db.execSQL("DELETE * FROM " + ShareColumns.TABLE_NAME)
         db.execSQL("DELETE * FROM " + SyncColumns.TABLE_NAME)
-
-        db.close()
     }
 
     object ConnectionColumns : BaseColumns {
@@ -139,7 +136,6 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         const val COL_PASSWORD = "Password"
         const val COL_PORT = "Port"
     }
-
     object ShareColumns : BaseColumns {
 
         const val TABLE_NAME = "ShareData"
@@ -151,7 +147,6 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         const val COL_PASSWORD = "Password"
         const val COL_PORT = "Port"
     }
-
     object SyncColumns : BaseColumns {
 
         const val TABLE_NAME = "SyncData"
@@ -163,6 +158,4 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         const val COL_PASSWORD = "Password"
         const val COL_PORT = "Port"
     }
-
-
 }

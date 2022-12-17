@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
 
         var db = DatabaseHandler(this)
-        db.insertConnection(ftp)
+        //db.insertConnection(ftp)
     }
 }
 
