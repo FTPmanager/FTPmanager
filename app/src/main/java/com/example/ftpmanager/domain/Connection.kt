@@ -1,7 +1,6 @@
 package com.example.ftpmanager.domain
 
 interface Connection {
-
     public val name: String
     public var connectionStatus: ConnectionStatus
     public var ip: String
@@ -19,5 +18,4 @@ interface Connection {
     public fun connect()
     public fun disconnect()
     public fun status(): ConnectionStatus
-
 }
