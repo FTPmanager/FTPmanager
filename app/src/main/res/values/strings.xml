@@ -7,4 +7,8 @@
     <string name="file_manager_menu">Files</string>
     <string name="FTP">FTP</string>
     <string name="SFTP">SFTP</string>
+    <string name="connection_error">Error</string>
+    <string name="connection_disconnected">Disconnected</string>
+    <string name="connection_connected">Connected</string>
+    <string name="connection_connecting">Connecting</string>
 </resources>
