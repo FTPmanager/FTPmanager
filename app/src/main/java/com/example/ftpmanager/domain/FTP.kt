@@ -1,7 +1,7 @@
 package com.example.ftpmanager.domain
 
 import android.util.Log
-import it.sauronsoftware.ftp4j.FTPClient
+import org.apache.commons.net.ftp.FTPClient
 
 
 class FTP public constructor(
@@ -23,13 +23,9 @@ class FTP public constructor(
 
         try {
             connectionStatus = ConnectionStatus.CONNECTING
-            client.connect(ip, port)
-            Log.e(TAG, "Connected 1")                       ///////
+            client.connect(ip)
             client.login(username, password)
-            Log.e(TAG, "Connected 2")                       ///////
-            client.type = FTPClient.TYPE_BINARY
-            Log.e(TAG, "Connected 3")                       ///////
-            client.disconnect(true)             ///////
+            client.disconnect()
 
         } catch (e: Exception) {
             Log.e(TAG, "Funny Szymon's Error")                             ///////
@@ -40,10 +36,14 @@ class FTP public constructor(
 
     override fun disconnect() {
         if(connectionStatus == ConnectionStatus.CONNECTED)
-            client.disconnect(true)
+            client.disconnect()
     }
 
     override fun status(): ConnectionStatus {
         return connectionStatus
+    }
+
+    override fun toString(): String {
+        return "name: " + name + ", ip: " + ip + ", username: " + username + ", password: " + password + ", port: " + port
     }
 }

@@ -65,6 +65,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         row.put(ConnectionColumns.COL_PORT, connection.port)
 
         var result = db.insert(ConnectionColumns.TABLE_NAME, null, row)
+        reloadLists()
+
         if(result == (-1).toLong())
             Log.e("DatabaseHandler", "Failed to insert connection to database!")
         else
@@ -91,20 +93,20 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
 
         if(result.moveToFirst()) {
             do {
-                when(result.getInt(0)) {
+                when(result.getInt(1)) {
                     1 -> list.add(FTP(
-                        result.getString(1),
                         result.getString(2),
                         result.getString(3),
                         result.getString(4),
-                        result.getInt(5)
+                        result.getString(5),
+                        result.getInt(6)
                     ))
                     2 -> list.add(SFTP(
-                        result.getString(1),
                         result.getString(2),
                         result.getString(3),
                         result.getString(4),
-                        result.getInt(5)
+                        result.getString(5),
+                        result.getInt(6)
                     ))
                     else -> continue
                 }
@@ -114,7 +116,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         result.close()
         return list
     }
-    fun reloadData() {
+    fun reloadLists() {
         LoadedData.connections = loadConnections(this.readableDatabase)
     }
     fun deleteData() {
