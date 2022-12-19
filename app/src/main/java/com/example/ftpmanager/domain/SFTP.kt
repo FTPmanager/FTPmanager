@@ -22,4 +22,12 @@ class SFTP public constructor(
     override fun status(): ConnectionStatus {
         return connectionStatus
     }
+
+    override fun type(): Connections {
+        return Connections.SFTP
+    }
+
+    override fun toString(): String {
+        TODO("Not yet implemented")
+    }
 }
