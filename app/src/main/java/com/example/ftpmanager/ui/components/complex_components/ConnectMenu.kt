@@ -16,12 +16,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ftpmanager.domain.Connection
 import com.example.ftpmanager.ui.ConnectMenuViewModel
 import com.example.ftpmanager.R
+import com.example.ftpmanager.domain.ConnectionStatus
 import com.example.ftpmanager.domain.FTP
 
 @Composable
 fun ConnectMenu(
     modifier: Modifier = Modifier,
-    connectMenuViewModel: ConnectMenuViewModel = viewModel()
+    connectMenuViewModel: ConnectMenuViewModel
 ) {
     val connectMenuUIState by connectMenuViewModel.uiState.collectAsState()
     Scaffold(
@@ -44,18 +45,32 @@ fun ConnectMenu(
 
 @Composable
 fun ConnectMenuBody(cons: List<Connection>, modifier: Modifier = Modifier) {
-    val testConnection = FTP(
-        name = "test FTP preset",
-        ip = "192.168.1.1"
+    val testConnection1 = FTP(
+        name = "test FTP preset 1",
+        ip = "192.168.1.1",
     )
-    LazyColumn(
-        userScrollEnabled = true,
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState())
+    testConnection1.connectionStatus = ConnectionStatus.CONNECTED
+    val testConnection2 = FTP(
+        name = "test FTP preset 2",
+        ip = "ffff:ffff:ffff:ffff:ffff:ffff",
+    )
+    testConnection2.connectionStatus = ConnectionStatus.CONNECTING
+    val testConnection3 = FTP(
+        name = "test FTP preset 3",
+        ip = "www.gogole.pl",
+    )
+    testConnection3.connectionStatus = ConnectionStatus.ERROR
+    Column(
+        //userScrollEnabled = true,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier.padding(10.dp)//.verticalScroll(rememberScrollState())
     ) {
 //        cons.forEach { con ->
 //            //ConnectCard(con, {}, {}, {})
 //        }
-        //item{ConnectCard(testConnection, {}, {}, {})}
+        ConnectCard(testConnection1, {}, {}, {})
+        ConnectCard(testConnection2, {}, {}, {})
+        ConnectCard(testConnection3, {}, {}, {})
     }
 }
 

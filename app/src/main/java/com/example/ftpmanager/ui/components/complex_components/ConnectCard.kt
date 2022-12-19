@@ -2,6 +2,8 @@ package com.example.ftpmanager.ui.components.complex_components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,7 +70,7 @@ fun ConnectCard(
                     modifier = Modifier.size(64.dp)
                 )
             }
-            //Divider(color = MaterialTheme.colorScheme.primary, modifier = modifier)
+            //Divider(thickness = 1.dp, color = MaterialTheme.colors.background, modifier = modifier.fillMaxHeight())
             IconButton(
                 icon = R.drawable.ic_outline_settings_24,
                 onClick = settings_button_onClick,

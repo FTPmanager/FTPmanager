@@ -17,10 +17,11 @@ import com.example.ftpmanager.ui.components.complex_components.ConnectMenu
 import com.example.ftpmanager.ui.theme.FTPmanagerTheme
 
 class MainActivity : ComponentActivity() {
+    var db: DatabaseHandler = DatabaseHandler(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
-        var db = DatabaseHandler(this)
         db.insertConnection(ftp)
         setContent {
             FTPmanagerTheme {
@@ -29,23 +30,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   FTPmanagerApp()
+                   FTPmanagerApp(db = db)
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-
-    FTPmanagerTheme {
-        ConnectMenu()
+    override fun onDestroy() {
+        super.onDestroy()
+        db.close()
     }
 }

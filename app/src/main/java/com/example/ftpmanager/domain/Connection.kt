@@ -8,7 +8,7 @@ interface Connection {
     public var password: String
     public var port: Int
 
-    public fun type(): Connections { return Connections.UNDEFINED }
+    public fun getType(): Connections { return Connections.UNDEFINED }
     public fun connect()
     public fun disconnect()
     public fun status(): ConnectionStatus

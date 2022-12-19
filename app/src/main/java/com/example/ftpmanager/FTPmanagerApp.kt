@@ -17,13 +17,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ftpmanager.R
+import com.example.ftpmanager.data.DatabaseHandler
 import com.example.ftpmanager.ui.components.complex_components.ConnectMenu
 import com.example.ftpmanager.ui.components.complex_components.FloatingAddButton
 
 @Composable
 fun FTPmanagerApp(
     modifier: Modifier = Modifier,
-    connectMenuViewModel: ConnectMenuViewModel = viewModel()
+    db: DatabaseHandler
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -38,7 +39,8 @@ fun FTPmanagerApp(
         ) {
             composable(route = Screens.CONNECT.name) {
                 ConnectMenu(
-                    modifier = modifier.padding(innerPadding)
+                    modifier = modifier.padding(innerPadding),
+                    connectMenuViewModel = ConnectMenuViewModel(db)
                 )
             }
 

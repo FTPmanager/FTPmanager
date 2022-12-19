@@ -23,7 +23,7 @@ class SFTP public constructor(
         return connectionStatus
     }
 
-    override fun type(): Connections {
+    override fun getType(): Connections {
         return Connections.SFTP
     }
 
