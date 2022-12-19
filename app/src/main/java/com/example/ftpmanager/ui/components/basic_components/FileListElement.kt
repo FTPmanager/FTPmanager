@@ -1,7 +1,7 @@
 package com.example.ftpmanager.ui.components.basic_components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +22,7 @@ fun FileListElement(
                 Icon(painter = painterResource(R.drawable.ic_outline_folder_24), contentDescription = null)
             else
                 Icon(painter = painterResource(R.drawable.ic_outline_insert_drive_file_24), contentDescription = null)
-            Text(text = text, style = MaterialTheme.typography.labelSmall)
+            Text(text = text, style = MaterialTheme.typography.h4)
         }
     }
 }

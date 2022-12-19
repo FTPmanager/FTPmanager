@@ -1,10 +1,11 @@
 package com.example.ftpmanager.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Shapes
+import androidx.compose.material.Shapes
+import androidx.compose.ui.unit.dp
 
 val AppShapes = Shapes(
-    small = RoundedCornerShape(50),
-    medium = RoundedCornerShape(25),
-    large = RoundedCornerShape(25)
+    small = RoundedCornerShape(10.dp),
+    medium = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(0.dp)
 )

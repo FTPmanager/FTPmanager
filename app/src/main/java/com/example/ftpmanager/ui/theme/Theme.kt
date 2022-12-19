@@ -1,7 +1,7 @@
 package com.example.ftpmanager.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -11,8 +11,8 @@ fun FTPmanagerTheme(
 ) {
     MaterialTheme(
         shapes = AppShapes,
-        colorScheme = AppDarkColorScheme,
-        typography = Typography,
+        colors = AppDarkColorScheme,
+        typography = AppTypography,
         content = content
     )
 }

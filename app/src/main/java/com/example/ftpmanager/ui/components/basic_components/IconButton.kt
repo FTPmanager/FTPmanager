@@ -1,12 +1,12 @@
 package com.example.ftpmanager.ui.components.basic_components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,15 +23,12 @@ fun IconButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .wrapContentWidth()
-            .wrapContentHeight()
-            .size(96.dp)
+        modifier = modifier.wrapContentHeight()
     ) {
         Icon(
             painter = painterResource(icon),
             contentDescription = null,
-            modifier = modifier
+            modifier = modifier.fillMaxSize()
         )
     }
 }
@@ -40,8 +37,6 @@ fun IconButton(
 @Composable
 fun IconButtonPreview() {
     FTPmanagerTheme {
-        Surface(modifier = Modifier.size(64.dp)) {
-            IconButton(R.drawable.ic_outline_settings_24, {})
-        }
+        IconButton(R.drawable.ic_outline_settings_24, {})
     }
 }

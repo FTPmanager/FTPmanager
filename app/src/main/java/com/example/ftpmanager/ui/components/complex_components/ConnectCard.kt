@@ -1,74 +1,91 @@
 package com.example.ftpmanager.ui.components.complex_components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ftpmanager.R
+import com.example.ftpmanager.domain.Connection
 import com.example.ftpmanager.domain.ConnectionStatus
+import com.example.ftpmanager.domain.FTP
 import com.example.ftpmanager.ui.components.basic_components.*
-import com.example.ftpmanager.ui.theme.FTPmanagerTheme
+import com.example.ftpmanager.ui.theme.*
 
 @Composable
 fun ConnectCard(
+    con: Connection,
+    connect_button_onClick: () -> Unit,
+    disconnect_button_onClick: () -> Unit,
+    settings_button_onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card() {
-        
-    }
-    Row(
-
+    Card(
+        elevation = 4.dp,
+        modifier = Modifier.wrapContentHeight().fillMaxWidth()
     ) {
         Row(
-
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxSize()
         ) {
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.Start,
+                modifier = modifier.padding(10.dp)
             ) {
                 RoundBoxText(R.string.FTP)
-                PresetNameText("Test preset name")
-                SquareBoxText("192.168.1.1")
+                PresetNameText(con.name)
+                SquareBoxText(con.ip)
             }
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.End
+                verticalArrangement = Arrangement.spacedBy(5.dp),
+                horizontalAlignment = Alignment.End,
+                modifier = modifier.padding(10.dp)
             ) {
                 Row(
-
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = modifier.padding(5.dp)
                 ) {
-                    SquareBoxText("Connected")
-                    Diode(ConnectionStatus.CONNECTED)
+                    SquareBoxText(
+                        when(con.connectionStatus) {
+                            ConnectionStatus.DISCONNECTED -> stringResource(R.string.connection_disconnected)
+                            ConnectionStatus.CONNECTING -> stringResource(R.string.connection_connecting)
+                            ConnectionStatus.CONNECTED -> stringResource(R.string.connection_connected)
+                            ConnectionStatus.ERROR -> stringResource(R.string.connection_error)
+                        }
+                    )
+                    Spacer(modifier.size(3.dp))
+                    Diode(con.connectionStatus, modifier = modifier.size(15.dp))
                 }
                 IconButton(
-                    icon = R.drawable.ic_outline_insert_link_24,
-                    onClick = {}
+                    icon = R.drawable.ic_outline_link_24,
+                    onClick = connect_button_onClick,
+                    modifier = Modifier.size(64.dp)
                 )
             }
+            //Divider(color = MaterialTheme.colorScheme.primary, modifier = modifier)
+            IconButton(
+                icon = R.drawable.ic_outline_settings_24,
+                onClick = settings_button_onClick,
+                modifier = Modifier.size(64.dp)
+            )
         }
-        IconButton(
-            icon = R.drawable.ic_outline_settings_24,
-            onClick = {}
-        )
     }
-
 }
 
 @Preview
 @Composable
-fun ConnectCardConnectedPreview() {
+fun ConnectCardsPreview() {
+    val testConnection = FTP(
+        name = "test FTP preset",
+        ip = "192.168.1.1"
+    )
     FTPmanagerTheme {
-        Surface(
-            modifier = Modifier.size(300.dp)
-        ) {
-            ConnectCard()
-        }
+        ConnectCard(testConnection, {}, {}, {})
     }
 }
