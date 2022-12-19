@@ -19,6 +19,7 @@ import com.example.ftpmanager.domain.FTP
 import com.example.ftpmanager.ui.theme.FTPmanagerTheme
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPClientConfig
+import java.net.InetAddress
 
 
 class MainActivity : ComponentActivity() {
@@ -37,26 +38,30 @@ class MainActivity : ComponentActivity() {
         }
 
         val policy = ThreadPolicy.Builder().permitAll().build()
-
         StrictMode.setThreadPolicy(policy)
 
-        val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
+        var db = DatabaseHandler(this)
 
-        //var db = DatabaseHandler(this)
-        //db.insertConnection(ftp)
+        val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu")
+
         var ftpClient = FTPClient()
         var ftpConfig = FTPClientConfig()
+        ftpClient.setUn
 
+        //db.insertConnection(ftp)
 
-        //ftpClient.connect(ftp.ip)
-        //ftpClient.login(ftp.username, ftp.password)
-        //ftpClient.disconnect()
+        ftpClient.connect(ftp.ip)
+        ftpClient.enterLocalActiveMode()
+        ftpClient.enterRemoteActiveMode(InetAddress.getByName(ftp.ip), ftp.port)
+        ftpClient.login(ftp.username, ftp.password)
 
+        var list = ftpClient.listNames()
 
-        var db = DatabaseHandler(this)
+        ftpClient.disconnect()
+
         db.loadConnections()
-        for (con in LoadedData.connections) {
-            Log.e("MAIN", con.toString())
+        for (element in list) {
+            Log.e("MAIN", element)
         }
     }
 }

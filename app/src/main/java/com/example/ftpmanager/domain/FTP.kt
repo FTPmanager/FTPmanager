@@ -43,7 +43,15 @@ class FTP public constructor(
         return connectionStatus
     }
 
+    override fun type(): Connections {
+        return Connections.FTP
+    }
+
     override fun toString(): String {
-        return "name: " + name + ", ip: " + ip + ", username: " + username + ", password: " + password + ", port: " + port
+        return "name: " + name +
+                ", ip: " + ip +
+                ", username: " + username +
+                ", password: " + password +
+                ", port: " + port
     }
 }

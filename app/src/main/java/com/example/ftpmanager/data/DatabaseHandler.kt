@@ -57,7 +57,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         val db = this.writableDatabase
         var row = ContentValues()
 
-        row.put(ConnectionColumns.COL_CONNECTION_TYPE, connection.type())
+        row.put(ConnectionColumns.COL_CONNECTION_TYPE, connection.type().value)
         row.put(ConnectionColumns.COL_NAME, connection.name)
         row.put(ConnectionColumns.COL_IP, connection.ip)
         row.put(ConnectionColumns.COL_USERNAME, connection.username)
@@ -94,14 +94,14 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         if(result.moveToFirst()) {
             do {
                 when(result.getInt(1)) {
-                    1 -> list.add(FTP(
+                    Connections.FTP.value -> list.add(FTP(
                         result.getString(2),
                         result.getString(3),
                         result.getString(4),
                         result.getString(5),
                         result.getInt(6)
                     ))
-                    2 -> list.add(SFTP(
+                    Connections.SFTP.value -> list.add(SFTP(
                         result.getString(2),
                         result.getString(3),
                         result.getString(4),
