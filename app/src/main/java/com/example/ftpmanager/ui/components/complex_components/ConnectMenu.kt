@@ -65,9 +65,9 @@ fun ConnectMenuBody(cons: List<Connection>, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier.padding(10.dp)//.verticalScroll(rememberScrollState())
     ) {
-//        cons.forEach { con ->
-//            //ConnectCard(con, {}, {}, {})
-//        }
+        cons.forEach { con ->
+            ConnectCard(con, {}, {}, {})
+        }
         ConnectCard(testConnection1, {}, {}, {})
         ConnectCard(testConnection2, {}, {}, {})
         ConnectCard(testConnection3, {}, {}, {})
