@@ -27,7 +27,7 @@ fun ConnectCard(
 ) {
     Card(
         elevation = 4.dp,
-        modifier = Modifier.wrapContentHeight().fillMaxWidth()
+        modifier = Modifier.wrapContentHeight().fillMaxWidth().padding(10.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -70,7 +70,7 @@ fun ConnectCard(
                     modifier = Modifier.size(64.dp)
                 )
             }
-            //Divider(thickness = 1.dp, color = MaterialTheme.colors.background, modifier = modifier.fillMaxHeight())
+            //Divider(color = MaterialTheme.colors.background)
             IconButton(
                 icon = R.drawable.ic_outline_settings_24,
                 onClick = settings_button_onClick,

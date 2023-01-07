@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -23,7 +24,9 @@ fun IconButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.wrapContentHeight()
+        modifier = modifier.wrapContentHeight(),
+        shape = RoundedCornerShape(100),
+        elevation = null
     ) {
         Icon(
             painter = painterResource(icon),

@@ -23,6 +23,14 @@ val AppTypography = Typography(
         letterSpacing = 0.5.sp
     ),
 
+    h5 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
+        lineHeight = 1.sp,
+        letterSpacing = 0.5.sp
+    ),
+
     caption = TextStyle(
         fontFamily = FontFamily.Monospace,
         fontWeight = FontWeight.Normal,

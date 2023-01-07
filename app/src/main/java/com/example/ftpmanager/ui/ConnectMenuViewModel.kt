@@ -1,5 +1,6 @@
 package com.example.ftpmanager.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.ftpmanager.data.DatabaseHandler
 import com.example.ftpmanager.domain.Connection
@@ -14,17 +15,51 @@ class ConnectMenuViewModel(db: DatabaseHandler) : ViewModel() {
 
     init {
         //load connections to the ConnectMenuUIState
-        _uiState.value = ConnectMenuUIState(db.loadConnections())
+        _uiState.value = ConnectMenuUIState(connections = db.loadConnections())
     }
 
-    fun createConnection(/*values*/) {
+    fun startAddingConnection() {
+        _uiState.update { currentState -> currentState.copy(
+            isBeingAdded = true,
+            isBeingEdited = false,
+            textFieldName = "",
+            textFieldIP = "",
+            textFieldUsername = "",
+            textFieldPassword = "",
+            textFieldPort = ""
+        ) }
+    }
+
+    fun startEditingConnection(con: Connection) {
+        _uiState.update { currentState -> currentState.copy(
+            isBeingAdded = false,
+            isBeingEdited = true,
+            editedConnection = con,
+            textFieldName = con.name,
+            textFieldIP = con.ip,
+            textFieldUsername = con.username,
+            textFieldPassword = con.password,
+            textFieldPort = con.port.toString()
+        ) }
+    }
+
+    fun stopAddingOrEditingConnection() {
+        _uiState.update { currentState -> currentState.copy(isBeingAdded = false, isBeingEdited = false) }
+    }
+
+    fun createConnection() {
         //create new connection in the database
         //create new Connection object and add it to ConnectMenuUIState
+
     }
 
-    fun removeConnection(con: Connection) {
+    fun removeConnection() {
         //remove connection from the database
         //remove Connection object from ConnectMenuUIState
+    }
+
+    fun editConnection() {
+
     }
 
     fun updateConnectionStates() {
@@ -38,5 +73,25 @@ class ConnectMenuViewModel(db: DatabaseHandler) : ViewModel() {
 
     fun disconnectConnection(con: Connection) {
 
+    }
+
+    fun updateTextFieldName(s: String) {
+        _uiState.update { currentState -> currentState.copy(textFieldName = s) }
+    }
+
+    fun updateTextFieldIP(s: String) {
+        _uiState.update { currentState -> currentState.copy(textFieldIP = s) }
+    }
+
+    fun updateTextFieldUsername(s: String) {
+        _uiState.update { currentState -> currentState.copy(textFieldUsername = s) }
+    }
+
+    fun updateTextFieldPassword(s: String) {
+        _uiState.update { currentState -> currentState.copy(textFieldPassword = s) }
+    }
+
+    fun updateTextFieldPort(s: String) {
+        _uiState.update { currentState -> currentState.copy(textFieldPort = s) }
     }
 }
