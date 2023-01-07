@@ -56,7 +56,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         val db = this.writableDatabase
         var row = ContentValues()
 
-        row.put(ConnectionColumns.COL_CONNECTION_TYPE, connection.getType().value)
+        row.put(ConnectionColumns.COL_CONNECTION_TYPE, connection.type().value)
         row.put(ConnectionColumns.COL_NAME, connection.name)
         row.put(ConnectionColumns.COL_IP, connection.ip)
         row.put(ConnectionColumns.COL_USERNAME, connection.username)
@@ -74,6 +74,9 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
 
         val db = this.writableDatabase
         db.delete(ConnectionColumns.TABLE_NAME, ConnectionColumns.COL_NAME + "=?", arrayOf(connection.name.toString()))
+    }
+    fun editConnection(oldConnection: Connection, newConnection: Connection) {
+        /* TODO */
     }
     fun insertShare(share: Share) {
         TODO()

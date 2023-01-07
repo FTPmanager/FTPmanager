@@ -1,9 +1,12 @@
 package com.example.ftpmanager.ui
 
 import android.util.Log
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import com.example.ftpmanager.data.DatabaseHandler
 import com.example.ftpmanager.domain.Connection
+import com.example.ftpmanager.domain.ConnectionFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +15,7 @@ import kotlinx.coroutines.flow.update
 class ConnectMenuViewModel(db: DatabaseHandler) : ViewModel() {
     private val _uiState = MutableStateFlow(ConnectMenuUIState())
     val uiState: StateFlow<ConnectMenuUIState> = _uiState.asStateFlow()
+    val db: DatabaseHandler = db
 
     init {
         //load connections to the ConnectMenuUIState
@@ -50,16 +54,40 @@ class ConnectMenuViewModel(db: DatabaseHandler) : ViewModel() {
     fun createConnection() {
         //create new connection in the database
         //create new Connection object and add it to ConnectMenuUIState
-
+        val state = _uiState.asStateFlow()
+        val con = ConnectionFactory.getConnection(
+            name = state.value.textFieldName,
+            ip = state.value.textFieldIP,
+            username = state.value.textFieldUsername,
+            password = state.value.textFieldPassword,
+            port = state.value.textFieldPort.toInt()
+        )
+        db.insertConnection(con)
+        _uiState.update { currentState -> currentState.copy(
+            connections = currentState.connections + con
+        ) }
     }
 
     fun removeConnection() {
         //remove connection from the database
         //remove Connection object from ConnectMenuUIState
+        val state = _uiState.asStateFlow()
+        db.deleteConnection(state.value.editedConnection!!)
+        _uiState.update { currentState -> currentState.copy(
+            connections = db.loadConnections()
+        ) }
     }
 
     fun editConnection() {
-
+        val state = _uiState.asStateFlow()
+        val con = ConnectionFactory.getConnection(
+            name = state.value.textFieldName,
+            ip = state.value.textFieldIP,
+            username = state.value.textFieldUsername,
+            password = state.value.textFieldPassword,
+            port = state.value.textFieldPort.toInt()
+        )
+        db.editConnection(state.value.editedConnection!!, con)
     }
 
     fun updateConnectionStates() {

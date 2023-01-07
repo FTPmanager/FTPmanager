@@ -23,7 +23,7 @@ class FTP public constructor(
     override var currentPath: String = ""
 
     @Volatile
-    override var connectionStatus: ConnectionStatus = ConnectionStatus.DISCONNECT
+    override var connectionStatus: ConnectionStatus = ConnectionStatus.DISCONNECTED
 
     @Volatile
     override var nameList: List<FileData> = emptyList()
@@ -31,7 +31,7 @@ class FTP public constructor(
     var handler = Handler(Looper.getMainLooper())
 
     override fun activate() {
-        if(connectionStatus == ConnectionStatus.DISCONNECT || connectionStatus == ConnectionStatus.CONNECTING) {
+        if(connectionStatus == ConnectionStatus.DISCONNECTED || connectionStatus == ConnectionStatus.CONNECTING) {
             handler.post( Runnable {
 
                 val client = FTPClient()
@@ -41,7 +41,7 @@ class FTP public constructor(
                     client.connect(ip, port)
                     client.login(username, password)
 
-                    connectionStatus = ConnectionStatus.CONNECT
+                    connectionStatus = ConnectionStatus.CONNECTED
 
                 } catch (e: Exception) {
 
@@ -55,14 +55,14 @@ class FTP public constructor(
         }
     }
     override fun deactivate() {
-        connectionStatus = ConnectionStatus.DISCONNECT
+        connectionStatus = ConnectionStatus.DISCONNECTED
     }
     override fun status(): ConnectionStatus {
         return connectionStatus
     }
     override fun listNames(): Boolean {
 
-        if (connectionStatus != ConnectionStatus.CONNECT) {
+        if (connectionStatus != ConnectionStatus.CONNECTED) {
             Log.e("FTPmanager FTP listNames", "Could not list file names for $name, because connection to server is not established!")
         }
 
@@ -88,7 +88,7 @@ class FTP public constructor(
     }
     override fun downloadFiles(localPath: String, fileNames: List<String>): Boolean {
 
-        if (connectionStatus != ConnectionStatus.CONNECT) {
+        if (connectionStatus != ConnectionStatus.CONNECTED) {
             Log.e("FTPmanager FTP downloadFiles", "Could not download files from $name, because connection to server is not established!")
         }
 
@@ -118,7 +118,7 @@ class FTP public constructor(
         return result
     }
     override fun uploadFiles(localPath: String, fileNames: List<String>): Boolean {
-        if (connectionStatus != ConnectionStatus.CONNECT) {
+        if (connectionStatus != ConnectionStatus.CONNECTED) {
             Log.e("FTPmanager FTP uploadFiles", "Could not upload files to $name, because connection to server is not established!")
         }
 
@@ -144,7 +144,7 @@ class FTP public constructor(
         return result
     }
 
-    override fun getType(): Connections {
+    override fun type(): Connections {
         return Connections.FTP
     }
     override fun toString(): String {

@@ -19,6 +19,6 @@ interface Connection {
     public fun uploadFiles(localPath: String, fileNames: List<String>): Boolean
 
     public fun type(): Connections { return Connections.UNDEFINED }
-    public fun status(): ConnectionStatus { return ConnectionStatus.DISCONNECT }
+    public fun status(): ConnectionStatus { return ConnectionStatus.DISCONNECTED }
     override fun toString(): String
 }
