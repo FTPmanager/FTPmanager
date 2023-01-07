@@ -1,9 +1,9 @@
 package com.example.ftpmanager.domain
 
 enum class ConnectionStatus {
-    DISCONNECTED,
+    DISCONNECT,
     CONNECTING,
-    CONNECTED,
+    CONNECT,
 
     ERROR
 }

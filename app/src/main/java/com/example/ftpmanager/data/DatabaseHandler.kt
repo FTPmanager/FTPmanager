@@ -49,7 +49,6 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
     }
     override fun onOpen(db: SQLiteDatabase?) {
         super.onOpen(db)
-        LoadedData.connections = loadConnections(db)
     }
 
     fun insertConnection(connection: Connection) {
@@ -65,12 +64,16 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
         row.put(ConnectionColumns.COL_PORT, connection.port)
 
         var result = db.insert(ConnectionColumns.TABLE_NAME, null, row)
-        reloadLists()
 
         if(result == (-1).toLong())
             Log.e("DatabaseHandler", "Failed to insert connection to database!")
         else
             Log.i("DatabaseHandler", "Added database record: " + connection.name)
+    }
+    fun deleteConnection(connection: Connection) {
+
+        val db = this.writableDatabase
+        db.delete(ConnectionColumns.TABLE_NAME, ConnectionColumns.COL_NAME + "=?", arrayOf(connection.name.toString()))
     }
     fun insertShare(share: Share) {
         TODO()
@@ -101,13 +104,6 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
                         result.getString(5),
                         result.getInt(6)
                     ))
-                    Connections.SFTP.value -> list.add(SFTP(
-                        result.getString(2),
-                        result.getString(3),
-                        result.getString(4),
-                        result.getString(5),
-                        result.getInt(6)
-                    ))
                     else -> continue
                 }
             } while(result.moveToNext())
@@ -115,9 +111,6 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB
 
         result.close()
         return list
-    }
-    fun reloadLists() {
-        LoadedData.connections = loadConnections(this.readableDatabase)
     }
     fun deleteData() {
         val db = this.writableDatabase
