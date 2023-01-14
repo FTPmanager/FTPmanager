@@ -1,14 +1,21 @@
 package com.example.ftpmanager.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.ftpmanager.data.LoadedData
 import com.example.ftpmanager.domain.Connection
+import com.example.ftpmanager.domain.FTP
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 class FileBrowserMenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(FileBrowserMenuUIState(selectedConnection = null))
     val uiState: StateFlow<FileBrowserMenuUIState> = _uiState.asStateFlow()
+
+    var ftp = LoadedData.connections[0]
 
     init {
         //select
@@ -34,4 +41,15 @@ class FileBrowserMenuViewModel : ViewModel() {
 
     }
 
+    fun text() {
+        viewModelScope.launch {
+            val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
+            ftp.activate()
+            val result = ftp.listNames().firstOrNull()
+
+            if (result == true) {
+                _uiState.value.nameList = ftp.nameList
+            }
+        }
+    }
 }

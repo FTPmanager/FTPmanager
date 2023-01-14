@@ -3,10 +3,15 @@ package com.example.ftpmanager.domain
 import android.util.Log
 import android.os.Handler
 import android.os.Looper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import org.apache.commons.net.ftp.FTPClient
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.util.Hashtable
 
 
 class FTP public constructor(
@@ -19,48 +24,54 @@ class FTP public constructor(
 
 ) : Connection {
 
-    @Volatile
     override var currentPath: String = ""
-
-    @Volatile
     override var connectionStatus: ConnectionStatus = ConnectionStatus.DISCONNECTED
-
-    @Volatile
     override var nameList: List<FileData> = emptyList()
+
+//    companion object {
+//        private val map = Hashtable<Int, FTP>()
+//        fun addInstance(ftp: FTP) {
+//            map[ftp.ID] = ftp
+//        }
+//        fun getInstance(id: Int): FTP? {
+//            return map[id]
+//        }
+//    }
 
     var handler = Handler(Looper.getMainLooper())
 
-    override fun activate() {
+    @Synchronized
+    override fun activate(): Flow<Unit> = flow {
         if(connectionStatus == ConnectionStatus.DISCONNECTED || connectionStatus == ConnectionStatus.CONNECTING) {
-            handler.post( Runnable {
 
-                val client = FTPClient()
-                try {
-                    connectionStatus = ConnectionStatus.CONNECTING
+            val client = FTPClient()
+            try {
+                connectionStatus = ConnectionStatus.CONNECTING
 
-                    client.connect(ip, port)
-                    client.login(username, password)
+                client.connect(ip, port)
+                client.login(username, password)
 
-                    connectionStatus = ConnectionStatus.CONNECTED
+                connectionStatus = ConnectionStatus.CONNECTED
 
-                } catch (e: Exception) {
+            } catch (e: Exception) {
 
-                    Log.e("FTPmanager FTP activate", "Could not connect to $name")
-                    connectionStatus = ConnectionStatus.ERROR
+                Log.e("FTPmanager FTP activate", "Could not connect to $name")
+                connectionStatus = ConnectionStatus.ERROR
 
-                } finally {
-                    client.disconnect()
-                }
-            })
+            } finally {
+                client.disconnect()
+            }
         }
-    }
+        emit(Unit)
+    }.flowOn(Dispatchers.IO)
     override fun deactivate() {
         connectionStatus = ConnectionStatus.DISCONNECTED
     }
     override fun status(): ConnectionStatus {
         return connectionStatus
     }
-    override fun listNames(): Boolean {
+    @Synchronized
+    override fun listNames(): Flow<Boolean> = flow {
 
         if (connectionStatus != ConnectionStatus.CONNECTED) {
             Log.e("FTPmanager FTP listNames", "Could not list file names for $name, because connection to server is not established!")
@@ -84,9 +95,9 @@ class FTP public constructor(
         } finally {
             ftpClient.disconnect()
         }
-        return result
-    }
-    override fun downloadFiles(localPath: String, fileNames: List<String>): Boolean {
+        emit(result)
+    }.flowOn(Dispatchers.IO)
+    override fun downloadFiles(localPath: String, fileNames: List<String>): Flow<Boolean> = flow {
 
         if (connectionStatus != ConnectionStatus.CONNECTED) {
             Log.e("FTPmanager FTP downloadFiles", "Could not download files from $name, because connection to server is not established!")
@@ -115,9 +126,9 @@ class FTP public constructor(
         } finally {
             ftpClient.disconnect()
         }
-        return result
-    }
-    override fun uploadFiles(localPath: String, fileNames: List<String>): Boolean {
+        emit(result)
+    }.flowOn(Dispatchers.IO)
+    override fun uploadFiles(localPath: String, fileNames: List<String>): Flow<Boolean> = flow {
         if (connectionStatus != ConnectionStatus.CONNECTED) {
             Log.e("FTPmanager FTP uploadFiles", "Could not upload files to $name, because connection to server is not established!")
         }
@@ -131,7 +142,7 @@ class FTP public constructor(
 
             for (name in fileNames) {
 
-                var file = File(localPath + name)
+                val file = File(localPath + name)
                 val inputStream = FileInputStream(file)
                 ftpClient.storeFile(name, inputStream)
             }
@@ -141,8 +152,8 @@ class FTP public constructor(
         } finally {
             ftpClient.disconnect()
         }
-        return result
-    }
+        emit( result)
+    }.flowOn(Dispatchers.IO)
 
     override fun type(): Connections {
         return Connections.FTP
