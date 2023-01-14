@@ -1,5 +1,6 @@
 package com.example.ftpmanager.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ftpmanager.data.LoadedData
@@ -15,7 +16,7 @@ class FileBrowserMenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(FileBrowserMenuUIState(selectedConnection = null))
     val uiState: StateFlow<FileBrowserMenuUIState> = _uiState.asStateFlow()
 
-    var ftp = LoadedData.connections[0]
+    //var ftp = LoadedData.connections[0]
 
     init {
         //select
@@ -45,11 +46,12 @@ class FileBrowserMenuViewModel : ViewModel() {
         viewModelScope.launch {
             val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
             ftp.activate()
-            val result = ftp.listNames().firstOrNull()
+//            val result = ftp.listNames().firstOrNull()
 
-            if (result == true) {
-                _uiState.value.nameList = ftp.nameList
-            }
+//            if (result == true) {
+//                _uiState.value.nameList = ftp.nameList
+//            }
+            Log.e("FTP", ftp.status().toString())
         }
     }
 }
