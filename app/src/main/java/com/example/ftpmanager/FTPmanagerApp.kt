@@ -23,8 +23,7 @@ import com.example.ftpmanager.ui.components.complex_components.*
 
 @Composable
 fun FTPmanagerApp(
-    modifier: Modifier = Modifier,
-    db: DatabaseHandler
+    modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -40,7 +39,7 @@ fun FTPmanagerApp(
         ) {
             composable(route = Screens.CONNECT.name) {
                 ConnectMenu(
-                    connectMenuViewModel = ConnectMenuViewModel(db)
+                    connectMenuViewModel = ConnectMenuViewModel()
                 )
             }
 

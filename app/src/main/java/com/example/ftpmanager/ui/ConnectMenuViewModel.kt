@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ConnectMenuViewModel(db: DatabaseHandler) : ViewModel() {
+class ConnectMenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ConnectMenuUIState())
     val uiState: StateFlow<ConnectMenuUIState> = _uiState.asStateFlow()
-    val db: DatabaseHandler = db
+    val db: DatabaseHandler = DatabaseHandler
 
     init {
         //load connections to the ConnectMenuUIState

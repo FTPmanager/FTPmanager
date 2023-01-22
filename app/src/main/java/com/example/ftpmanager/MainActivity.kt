@@ -17,8 +17,6 @@ import com.example.ftpmanager.ui.components.complex_components.ConnectMenu
 import com.example.ftpmanager.ui.theme.FTPmanagerTheme
 
 class MainActivity : ComponentActivity() {
-    var db: DatabaseHandler = DatabaseHandler(this)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //val ftp = FTP("HAHA FUNNY", "ftp.dlptest.com", "dlpuser", "rNrKYTX9g7z3RgJRmxWuGHbeu", 21)
@@ -29,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                   FTPmanagerApp(db = db)
+                   FTPmanagerApp()
                 }
             }
         }
@@ -37,6 +35,5 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        db.close()
     }
 }
