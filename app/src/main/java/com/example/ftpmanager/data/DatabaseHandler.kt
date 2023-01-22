@@ -6,9 +6,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.util.Log
+import com.example.ftpmanager.App
 import com.example.ftpmanager.domain.*
 
-class DatabaseHandler(context: Context): SQLiteOpenHelper(context, "FTPmanagerDB", null, 1) {
+object DatabaseHandler: SQLiteOpenHelper(App.instance, "FTPmanagerDB", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
 
