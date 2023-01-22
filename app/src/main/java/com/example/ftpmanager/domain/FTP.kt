@@ -38,7 +38,7 @@ class FTP public constructor(
 //        }
 //    }
 
-    var handler = Handler(Looper.getMainLooper())
+    //var handler = Handler(Looper.getMainLooper())
 
     @Synchronized
     override fun activate(): Flow<Unit> = flow {
@@ -164,5 +164,9 @@ class FTP public constructor(
                 ", username: " + username +
                 ", password: " + password +
                 ", port: " + port
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return toString() == other.toString()
     }
 }
