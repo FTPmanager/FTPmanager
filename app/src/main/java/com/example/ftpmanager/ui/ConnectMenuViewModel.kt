@@ -15,11 +15,10 @@ import kotlinx.coroutines.flow.update
 class ConnectMenuViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ConnectMenuUIState())
     val uiState: StateFlow<ConnectMenuUIState> = _uiState.asStateFlow()
-    val db: DatabaseHandler = DatabaseHandler
 
     init {
         //load connections to the ConnectMenuUIState
-        _uiState.value = ConnectMenuUIState(connections = db.loadConnections())
+        _uiState.value = ConnectMenuUIState(connections = DatabaseHandler.loadConnections())
     }
 
     fun startAddingConnection() {
@@ -30,7 +29,7 @@ class ConnectMenuViewModel : ViewModel() {
             textFieldIP = "",
             textFieldUsername = "",
             textFieldPassword = "",
-            textFieldPort = ""
+            textFieldPort = "21"
         ) }
     }
 
@@ -62,7 +61,7 @@ class ConnectMenuViewModel : ViewModel() {
             password = state.value.textFieldPassword,
             port = state.value.textFieldPort.toInt()
         )
-        db.insertConnection(con)
+        DatabaseHandler.insertConnection(con)
         _uiState.update { currentState -> currentState.copy(
             connections = currentState.connections + con
         ) }
@@ -72,9 +71,9 @@ class ConnectMenuViewModel : ViewModel() {
         //remove connection from the database
         //remove Connection object from ConnectMenuUIState
         val state = _uiState.asStateFlow()
-        db.deleteConnection(state.value.editedConnection!!)
+        DatabaseHandler.deleteConnection(state.value.editedConnection!!)
         _uiState.update { currentState -> currentState.copy(
-            connections = db.loadConnections()
+            connections = DatabaseHandler.loadConnections()
         ) }
     }
 
@@ -87,7 +86,7 @@ class ConnectMenuViewModel : ViewModel() {
             password = state.value.textFieldPassword,
             port = state.value.textFieldPort.toInt()
         )
-        db.editConnection(state.value.editedConnection!!, con)
+        DatabaseHandler.editConnection(state.value.editedConnection!!, con)
     }
 
     fun updateConnectionStates() {
