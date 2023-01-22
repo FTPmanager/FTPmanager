@@ -1,7 +1,6 @@
 package com.example.ftpmanager
 
 import com.example.ftpmanager.data.DatabaseHandler
-import com.example.ftpmanager.domain.ConnectionFactory
 import com.example.ftpmanager.ui.ConnectMenuViewModel
 import org.junit.Test
 
@@ -15,12 +14,11 @@ import org.junit.Assert.*
 class ConnectMenuViewModelTests {
     @Test
     fun connectionBeingAdded() {
-        val db: DatabaseHandler = DatabaseHandler
-        val connectMenuViewModel: ConnectMenuViewModel = ConnectMenuViewModel()
+        val connectMenuViewModel = ConnectMenuViewModel()
 
-        val initialLength: Int = db.loadConnections().size
+        val initialLength: Int = DatabaseHandler.loadConnections().size
         connectMenuViewModel.createConnection()
-        val postLength: Int = db.loadConnections().size
+        val postLength: Int = DatabaseHandler.loadConnections().size
         assertEquals(initialLength + 1, postLength)
     }
 }

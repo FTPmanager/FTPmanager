@@ -88,7 +88,7 @@ fun FloatingAddButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_outline_add_24),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.add_connection),
             tint = MaterialTheme.colors.onPrimary
         )
     }
@@ -108,31 +108,41 @@ fun ConnectMenuAdd(
             label = R.string.con_name_text_field,
             value = connectMenuUIState.textFieldName,
             onValueChange = { connectMenuViewModel.updateTextFieldName(it) },
-            modifier = modifier.fillMaxWidth().padding(10.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
         BasicTextField(
             label = R.string.con_ip_text_field,
             value = connectMenuUIState.textFieldIP,
             onValueChange = { connectMenuViewModel.updateTextFieldIP(it) },
-            modifier = modifier.fillMaxWidth().padding(10.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
         BasicTextField(
             label = R.string.con_username_text_field,
             value = connectMenuUIState.textFieldUsername,
             onValueChange = { connectMenuViewModel.updateTextFieldUsername(it) },
-            modifier = modifier.fillMaxWidth().padding(10.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
         BasicTextField(
             label = R.string.con_password_text_field,
             value = connectMenuUIState.textFieldPassword,
             onValueChange = { connectMenuViewModel.updateTextFieldPassword(it) },
-            modifier = modifier.fillMaxWidth().padding(10.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
         BasicTextField(
             label = R.string.con_port_text_field,
             value = connectMenuUIState.textFieldPort,
             onValueChange = { connectMenuViewModel.updateTextFieldPort(it) },
-            modifier = modifier.fillMaxWidth().padding(10.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         )
         if (connectMenuUIState.isBeingAdded) {
             TextButton(
@@ -141,12 +151,16 @@ fun ConnectMenuAdd(
                     connectMenuViewModel.createConnection()
                     connectMenuViewModel.stopAddingOrEditingConnection()
                           },
-                modifier = modifier.padding(10.dp).fillMaxWidth()
+                modifier = modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
             )
         }
         else {
             Row(
-                modifier = modifier.fillMaxWidth().wrapContentHeight(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
