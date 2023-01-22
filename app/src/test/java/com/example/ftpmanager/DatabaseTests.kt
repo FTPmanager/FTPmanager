@@ -56,7 +56,7 @@ class DatabaseTests {
         assertTrue(result)
 
         result = false
-        DatabaseHandler.editConnection(ftpNewer)
+        DatabaseHandler.editConnection(ftp, ftpNewer)
         list = DatabaseHandler.loadConnections()
         for (element in list) {
             if (element.equals(ftpNewer))
